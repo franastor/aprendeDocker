@@ -630,182 +630,126 @@ docker run -d \\
       <List>
         <ListItem>
           <ListItemText 
-            primary="Estructura básica de docker-compose.yml"
+            primary="¿Qué es Docker Compose?"
+            secondary="Docker Compose es una herramienta para definir y ejecutar aplicaciones multi-contenedor. Permite configurar todos los servicios de tu aplicación en un solo archivo YAML."
+          />
+        </ListItem>
+        <Divider />
+        <ListItem>
+          <ListItemText 
+            primary="Estructura básica"
+            secondary={
+              <pre style={{ whiteSpace: 'pre-wrap' }}>
+                {`version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: example`}
+              </pre>
+            }
+          />
+        </ListItem>
+        <Divider />
+        <ListItem>
+          <ListItemText 
+            primary="Comandos básicos"
+            secondary={
+              <List>
+                <ListItem>
+                  <ListItemText 
+                    primary="docker-compose up"
+                    secondary="Inicia todos los servicios definidos en el archivo docker-compose.yml"
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText 
+                    primary="docker-compose down"
+                    secondary="Detiene y elimina todos los contenedores, redes y volúmenes creados por docker-compose up"
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText 
+                    primary="docker-compose ps"
+                    secondary="Lista todos los contenedores en ejecución"
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText 
+                    primary="docker-compose logs"
+                    secondary="Muestra los logs de todos los servicios"
+                  />
+                </ListItem>
+              </List>
+            }
+          />
+        </ListItem>
+      </List>
+    )
+  },
+  {
+    id: 'docker-healthchecks',
+    title: 'Healthchecks y Restart Policies',
+    content: (
+      <List>
+        <ListItem>
+          <ListItemText 
+            primary="Healthchecks"
             secondary={
               <div>
                 <Typography variant="body2" gutterBottom>
-                  Explicación detallada del archivo docker-compose.yml:
+                  Los healthchecks son una forma de verificar si un contenedor está funcionando correctamente. Docker puede monitorear el estado de salud de tus contenedores y tomar acciones basadas en el resultado.
+                </Typography>
+                <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
+                  Ejemplo de configuración de healthcheck en docker-compose.yml:
                 </Typography>
                 <pre style={{ whiteSpace: 'pre-wrap', marginTop: '8px' }}>
-                  {`# La versión del archivo docker-compose.yml
-# '3' es la versión más reciente y recomendada
-# Define las características disponibles y la sintaxis
-version: '3'
-
-# Define los servicios que componen la aplicación
-services:
-  # Servicio web
+                  {`services:
   web:
-    # Construye la imagen usando el Dockerfile en el directorio actual
     build: .
-    # Mapea los puertos del contenedor al host
-    # Formato: "PUERTO_HOST:PUERTO_CONTENEDOR"
-    ports:
-      - "3000:3000"
-    # Define variables de entorno
-    environment:
-      - NODE_ENV=production
-    # Dependencias entre servicios
-    depends_on:
-      - db
-
-  # Servicio de base de datos
-  db:
-    # Usa una imagen pre-construida
-    image: postgres
-    # Variables de entorno específicas para la base de datos
-    environment:
-      POSTGRES_PASSWORD: ejemplo
-      POSTGRES_DB: mi_db
-    # Define volúmenes para persistencia de datos
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    # Define la red para el servicio
-    networks:
-      - app-network
-    # Mapeo de puertos para la base de datos
-    ports:
-      - "5432:5432"  # Puerto de PostgreSQL
-
-# Define las redes disponibles
-networks:
-  app-network:
-    driver: bridge
-
-# Define los volúmenes disponibles
-volumes:
-  postgres-data:`}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s`}
                 </pre>
                 <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
-                  Explicación de los componentes principales:
+                  Explicación de los parámetros:
                 </Typography>
                 <List>
                   <ListItem>
                     <ListItemText 
-                      primary="version: '3'"
-                      secondary={
-                        <div>
-                          <Typography variant="body2">
-                            Especifica la versión del formato del archivo docker-compose.yml.
-                          </Typography>
-                          <Typography variant="body2" sx={{ mt: 1 }}>
-                            Características principales de la versión 3:
-                          </Typography>
-                          <List>
-                            <ListItem>
-                              <ListItemText 
-                                primary="Deploy"
-                                secondary="Soporte para configuraciones de despliegue"
-                              />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemText 
-                                primary="Secrets"
-                                secondary="Gestión segura de secretos"
-                              />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemText 
-                                primary="Healthcheck"
-                                secondary="Verificación de salud de contenedores"
-                              />
-                            </ListItem>
-                          </List>
-                        </div>
-                      }
+                      primary="test"
+                      secondary="El comando que se ejecutará para verificar la salud. Debe devolver 0 para éxito o 1 para fallo."
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText 
-                      primary="services"
-                      secondary="Define cada contenedor que forma parte de la aplicación"
+                      primary="interval"
+                      secondary="Tiempo entre cada verificación de salud (30s en el ejemplo)"
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText 
-                      primary="networks"
-                      secondary="Define las redes para la comunicación entre contenedores"
+                      primary="timeout"
+                      secondary="Tiempo máximo de espera para que el comando de prueba se complete"
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText 
-                      primary="volumes"
-                      secondary="Define los volúmenes para persistencia de datos"
-                    />
-                  </ListItem>
-                </List>
-                <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
-                  Explicación del mapeo de puertos:
-                </Typography>
-                <List>
-                  <ListItem>
-                    <ListItemText 
-                      primary="Formato general"
-                      secondary="PUERTO_HOST:PUERTO_CONTENEDOR"
+                      primary="retries"
+                      secondary="Número de intentos consecutivos fallidos antes de considerar el contenedor como no saludable"
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText 
-                      primary="Ejemplo: '3000:3000'"
-                      secondary={
-                        <div>
-                          <Typography variant="body2">
-                            • El primer número (3000) es el puerto en tu máquina host
-                          </Typography>
-                          <Typography variant="body2">
-                            • El segundo número (3000) es el puerto dentro del contenedor
-                          </Typography>
-                          <Typography variant="body2" sx={{ mt: 1 }}>
-                            Esto significa que cualquier petición a localhost:3000 en tu máquina será redirigida al puerto 3000 del contenedor.
-                          </Typography>
-                        </div>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText 
-                      primary="Ejemplo: '5432:5432'"
-                      secondary={
-                        <div>
-                          <Typography variant="body2">
-                            • El primer número (5432) es el puerto en tu máquina host
-                          </Typography>
-                          <Typography variant="body2">
-                            • El segundo número (5432) es el puerto de PostgreSQL dentro del contenedor
-                          </Typography>
-                          <Typography variant="body2" sx={{ mt: 1 }}>
-                            Esto permite que tu aplicación local se conecte a la base de datos usando localhost:5432.
-                          </Typography>
-                        </div>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText 
-                      primary="Consideraciones de seguridad"
-                      secondary={
-                        <div>
-                          <Typography variant="body2">
-                            • Solo expón los puertos necesarios
-                          </Typography>
-                          <Typography variant="body2">
-                            • En producción, considera usar un proxy inverso
-                          </Typography>
-                          <Typography variant="body2">
-                            • Puedes usar rangos de puertos: '3000-3010:3000-3010'
-                          </Typography>
-                        </div>
-                      }
+                      primary="start_period"
+                      secondary="Tiempo de gracia durante el inicio del contenedor, donde los fallos no se cuentan"
                     />
                   </ListItem>
                 </List>
@@ -816,28 +760,77 @@ volumes:
         <Divider />
         <ListItem>
           <ListItemText 
-            primary="Comandos comunes"
+            primary="Restart Policies"
             secondary={
-              <List>
-                <ListItem>
-                  <ListItemText 
-                    primary="docker-compose up"
-                    secondary="Inicia los servicios"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="docker-compose down"
-                    secondary="Detiene y elimina los contenedores"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="docker-compose build"
-                    secondary="Construye las imágenes"
-                  />
-                </ListItem>
-              </List>
+              <div>
+                <Typography variant="body2" gutterBottom>
+                  Las políticas de reinicio (restart policies) definen cómo Docker debe manejar los contenedores cuando se detienen. Hay varias opciones disponibles:
+                </Typography>
+                <List>
+                  <ListItem>
+                    <ListItemText 
+                      primary="no"
+                      secondary="No reinicia automáticamente el contenedor cuando se detiene"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText 
+                      primary="always"
+                      secondary="Siempre reinicia el contenedor si se detiene"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText 
+                      primary="unless-stopped"
+                      secondary="Reinicia el contenedor a menos que haya sido detenido manualmente"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText 
+                      primary="on-failure"
+                      secondary="Reinicia el contenedor solo si se detiene con un código de salida distinto de cero"
+                    />
+                  </ListItem>
+                </List>
+                <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
+                  Ejemplo de configuración en docker-compose.yml:
+                </Typography>
+                <pre style={{ whiteSpace: 'pre-wrap', marginTop: '8px' }}>
+                  {`services:
+  web:
+    build: .
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s`}
+                </pre>
+                <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
+                  Combinando healthchecks y restart policies:
+                </Typography>
+                <List>
+                  <ListItem>
+                    <ListItemText 
+                      primary="Monitoreo continuo"
+                      secondary="Los healthchecks verifican constantemente el estado de la aplicación"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText 
+                      primary="Recuperación automática"
+                      secondary="Si un healthcheck falla, la política de reinicio puede reiniciar el contenedor"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText 
+                      primary="Prevención de fallos"
+                      secondary="Ayuda a mantener los servicios funcionando y detectar problemas antes de que afecten a los usuarios"
+                    />
+                  </ListItem>
+                </List>
+              </div>
             }
           />
         </ListItem>
