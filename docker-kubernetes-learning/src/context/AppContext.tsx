@@ -1,47 +1,33 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-type OS = 'windows' | 'macos' | 'linux' | null;
-type Progress = {
-  [key: string]: boolean;
-};
+type OSType = 'windows' | 'macos' | 'linux';
 
-export type AppContextType = {
-  selectedOS: OS;
-  setSelectedOS: (os: OS) => void;
-  progress: Progress;
+interface AppContextType {
+  selectedOS: OSType | null;
+  setSelectedOS: (os: OSType) => void;
   completedLessons: string[];
-  markLessonComplete: (lessonId: string) => void;
-  isLessonComplete: (lessonId: string) => boolean;
-};
+  markLessonAsComplete: (lessonId: string) => void;
+}
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [selectedOS, setSelectedOS] = useState<OS>(null);
-  const [progress, setProgress] = useState<Progress>({});
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [selectedOS, setSelectedOS] = useState<OSType | null>(null);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
-  const markLessonComplete = (lessonId: string) => {
-    setProgress(prev => ({
-      ...prev,
-      [lessonId]: true
-    }));
-    setCompletedLessons(prev => [...prev, lessonId]);
-  };
-
-  const isLessonComplete = (lessonId: string) => {
-    return progress[lessonId] || false;
+  const markLessonAsComplete = (lessonId: string) => {
+    if (!completedLessons.includes(lessonId)) {
+      setCompletedLessons([...completedLessons, lessonId]);
+    }
   };
 
   return (
-    <AppContext.Provider
-      value={{
-        selectedOS,
-        setSelectedOS,
-        progress,
-        completedLessons,
-        markLessonComplete,
-        isLessonComplete,
+    <AppContext.Provider 
+      value={{ 
+        selectedOS, 
+        setSelectedOS, 
+        completedLessons, 
+        markLessonAsComplete 
       }}
     >
       {children}
@@ -49,10 +35,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   );
 };
 
-export const useApp = () => {
+export const useAppContext = () => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error('useApp must be used within an AppProvider');
+    throw new Error('useAppContext must be used within an AppProvider');
   }
   return context;
 }; 

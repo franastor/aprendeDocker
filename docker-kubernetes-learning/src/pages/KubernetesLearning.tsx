@@ -11,11 +11,10 @@ import {
   StepLabel,
   Button,
   Paper,
-  Card,
-  CardContent,
-  Grid
+  Grid,
+  CardContent
 } from '@mui/material';
-import { useApp } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 import { ContentCard } from '../components/common/ContentCard';
 
 const lessons = [
@@ -780,21 +779,19 @@ kubectl logs -l app=nginx`}
 ];
 
 export const KubernetesLearning: React.FC = () => {
-  const [activeLesson, setActiveLesson] = useState(0);
-  const { completedLessons, markLessonComplete } = useApp();
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
+  const { completedLessons, markLessonAsComplete } = useAppContext();
 
-  const handleNext = () => {
-    if (activeLesson < lessons.length - 1) {
-      markLessonComplete(lessons[activeLesson].id);
-      setActiveLesson(prev => prev + 1);
-    } else {
-      markLessonComplete(lessons[activeLesson].id);
+  const handleNextLesson = () => {
+    if (currentLessonIndex < lessons.length - 1) {
+      markLessonAsComplete(lessons[currentLessonIndex].id);
+      setCurrentLessonIndex(currentLessonIndex + 1);
     }
   };
 
-  const handlePrevious = () => {
-    if (activeLesson > 0) {
-      setActiveLesson(prev => prev - 1);
+  const handlePreviousLesson = () => {
+    if (currentLessonIndex > 0) {
+      setCurrentLessonIndex(currentLessonIndex - 1);
     }
   };
 
@@ -805,11 +802,11 @@ export const KubernetesLearning: React.FC = () => {
       </Typography>
 
       <Paper sx={{ p: 2, mb: 3 }}>
-        <Stepper activeStep={activeLesson} alternativeLabel>
+        <Stepper activeStep={currentLessonIndex} alternativeLabel>
           {lessons.map((lesson, index) => (
             <Step 
               key={lesson.id}
-              onClick={() => setActiveLesson(index)}
+              onClick={() => setCurrentLessonIndex(index)}
               sx={{ 
                 cursor: 'pointer',
                 '& .MuiStepLabel-root': {
@@ -828,9 +825,9 @@ export const KubernetesLearning: React.FC = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <ContentCard title={lessons[activeLesson].title}>
+          <ContentCard title={lessons[currentLessonIndex].title}>
             <CardContent>
-              {lessons[activeLesson].content}
+              {lessons[currentLessonIndex].content}
             </CardContent>
           </ContentCard>
         </Grid>
@@ -840,17 +837,17 @@ export const KubernetesLearning: React.FC = () => {
         <Button
           variant="outlined"
           size="large"
-          onClick={handlePrevious}
-          disabled={activeLesson === 0}
+          onClick={handlePreviousLesson}
+          disabled={currentLessonIndex === 0}
         >
           Lección anterior
         </Button>
         <Button
           variant="contained"
           size="large"
-          onClick={handleNext}
+          onClick={handleNextLesson}
         >
-          {activeLesson < lessons.length - 1 ? 'Siguiente lección' : 'Finalizar curso'}
+          {currentLessonIndex < lessons.length - 1 ? 'Siguiente lección' : 'Finalizar curso'}
         </Button>
       </Box>
     </Box>

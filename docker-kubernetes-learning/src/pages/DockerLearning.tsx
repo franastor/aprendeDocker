@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, Grid, List, ListItem, ListItemText, Divider, Button, Box, Stepper, Step, StepLabel, Paper } from '@mui/material';
 import { ContentCard } from '../components/common/ContentCard';
-import { useApp } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const lessons = [
@@ -1425,16 +1425,16 @@ docker network connect mi-red-interna mi-app-node`}
 ];
 
 export const DockerLearning: React.FC = () => {
-  const { markLessonComplete, isLessonComplete } = useApp();
+  const { markLessonAsComplete, completedLessons } = useAppContext();
   const navigate = useNavigate();
   const [activeLesson, setActiveLesson] = useState(0);
 
   const handleNext = () => {
     if (activeLesson < lessons.length - 1) {
-      markLessonComplete(lessons[activeLesson].id);
+      markLessonAsComplete(lessons[activeLesson].id);
       setActiveLesson(prev => prev + 1);
     } else {
-      markLessonComplete(lessons[activeLesson].id);
+      markLessonAsComplete(lessons[activeLesson].id);
       navigate('/');
     }
   };
@@ -1443,6 +1443,10 @@ export const DockerLearning: React.FC = () => {
     if (activeLesson > 0) {
       setActiveLesson(prev => prev - 1);
     }
+  };
+
+  const isLessonComplete = (lessonId: string) => {
+    return completedLessons.includes(lessonId);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { 
   AppBar, 
   Toolbar, 
@@ -10,8 +10,6 @@ import {
 } from '@mui/material';
 
 export const MainLayout: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <Box sx={{ 
       display: 'flex', 
@@ -30,38 +28,20 @@ export const MainLayout: React.FC = () => {
           borderColor: 'divider'
         }}
       >
-        <Toolbar sx={{ 
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          px: { xs: 2, sm: 4, md: 6 }
-        }}>
-          <IconButton 
-            edge="start" 
-            color="inherit" 
-            aria-label="home"
-            onClick={() => navigate('/')}
-            sx={{ p: 0 }}
-          >
+        <Toolbar>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img 
-              src="/images/logoweb_sin_fondo.png" 
+              src="/images/logoweb.png" 
               alt="Logo" 
               style={{ 
-                height: '60px',
-                width: 'auto'
-              }}
+                height: '40px',
+                marginRight: '16px'
+              }} 
             />
-          </IconButton>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              ml: 4,
-              flexGrow: 1,
-              fontWeight: 500
-            }}
-          >
-            Aprende Docker y Kubernetes
-          </Typography>
+            <Typography variant="h6" component="div">
+              Franastor Docker y K3s
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 

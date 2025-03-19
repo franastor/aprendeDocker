@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Grid, Paper, Button, Stepper, Step, StepLabel, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { selectedOS, setSelectedOS } = useApp();
+  const { setSelectedOS } = useAppContext();
   const [activeStep, setActiveStep] = React.useState(0);
 
   const steps = ['Selecciona la tecnología', 'Selecciona tu sistema operativo'];
@@ -17,7 +17,7 @@ export const Home: React.FC = () => {
 
   const handleOSSelect = (os: 'windows' | 'macos' | 'linux') => {
     setSelectedOS(os);
-    navigate('/docker-learning');
+    navigate('/docker');
   };
 
   return (

@@ -1,54 +1,89 @@
-# React + TypeScript + Vite
+# Aprende Docker y Kubernetes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación web interactiva para aprender Docker y Kubernetes desde cero.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🐳 Curso completo de Docker
+- ⚓ Curso completo de Kubernetes
+- 🖥️ Instrucciones específicas para cada sistema operativo
+- 📝 Ejemplos prácticos y ejercicios
+- ✅ Seguimiento de progreso
 
-## Expanding the ESLint configuration
+## Requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18.0.0 o superior
+- npm 9.0.0 o superior
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Desarrollo
+
+1. Clona el repositorio:
+```bash
+git clone <tu-repositorio>
+cd docker-kubernetes-learning
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. Instala las dependencias:
+```bash
+npm install
 ```
+
+3. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+## Producción
+
+Hay varias formas de servir la aplicación en producción:
+
+### 1. Construcción estática
+
+1. Construye la aplicación:
+```bash
+npm run build
+```
+
+2. Los archivos estáticos estarán en la carpeta `dist/`. Puedes servirlos con cualquier servidor web como Nginx o Apache.
+
+### 2. Usando Docker (Recomendado)
+
+1. Construye la imagen:
+```bash
+docker build -t aprende-docker-k8s .
+```
+
+2. Ejecuta el contenedor:
+```bash
+docker run -p 80:80 aprende-docker-k8s
+```
+
+La aplicación estará disponible en `http://localhost`
+
+### 3. Usando Docker Compose
+
+1. Ejecuta:
+```bash
+docker-compose up -d
+```
+
+La aplicación estará disponible en `http://localhost`
+
+## Configuración de Nginx
+
+El proyecto incluye una configuración optimizada de Nginx (`nginx.conf`) que proporciona:
+
+- Compresión gzip
+- Caché de archivos estáticos
+- Redirección de todas las rutas a index.html para SPA
+- Headers de seguridad
+
+## Contribuir
+
+Las contribuciones son bienvenidas. Por favor, abre un issue primero para discutir los cambios que te gustaría hacer.
+
+## Licencia
+
+MIT

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Grid, Button } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Box
+} from '@mui/material';
 import { Apple, Window, Terminal } from '@mui/icons-material';
 
 interface OSSelectorProps {

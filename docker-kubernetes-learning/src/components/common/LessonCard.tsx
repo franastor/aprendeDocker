@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
   Box,
-  LinearProgress,
   Chip,
 } from '@mui/material';
 import { CheckCircle, Lock, PlayArrow } from '@mui/icons-material';
