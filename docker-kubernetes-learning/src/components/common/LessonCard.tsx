@@ -9,7 +9,7 @@ import {
   Chip,
 } from '@mui/material';
 import { CheckCircle, Lock, PlayArrow } from '@mui/icons-material';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 
 interface LessonCardProps {
   id: string;
@@ -28,13 +28,14 @@ export const LessonCard: React.FC<LessonCardProps> = ({
   isLocked = false,
   onStart,
 }) => {
-  const { isLessonComplete } = useApp();
+  const { completedLessons } = useAppContext();
+  const isCompleted = completedLessons.includes(id);
 
   return (
-    <Card sx={{ mb: 2, position: 'relative' }}>
-      <CardContent>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
           <Chip
@@ -43,25 +44,22 @@ export const LessonCard: React.FC<LessonCardProps> = ({
             color="primary"
             variant="outlined"
           />
+          {isCompleted && <CheckCircle color="success" />}
+          {isLocked && <Lock color="disabled" />}
         </Box>
-        <Typography color="text.secondary" paragraph>
+        <Typography variant="body2" color="text.secondary">
           {description}
         </Typography>
-        {isLessonComplete(id) && (
-          <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main', mt: 1 }}>
-            <CheckCircle sx={{ mr: 1 }} />
-            <Typography variant="body2">Lección completada</Typography>
-          </Box>
-        )}
       </CardContent>
       <CardActions>
         <Button
-          startIcon={isLocked ? <Lock /> : <PlayArrow />}
+          startIcon={<PlayArrow />}
           onClick={onStart}
           disabled={isLocked}
-          color={isLessonComplete(id) ? 'success' : 'primary'}
+          fullWidth
+          variant={isCompleted ? "outlined" : "contained"}
         >
-          {isLocked ? 'Bloqueada' : isLessonComplete(id) ? 'Repasar' : 'Comenzar'}
+          {isCompleted ? "Repasar" : "Comenzar"}
         </Button>
       </CardActions>
     </Card>

@@ -5,7 +5,6 @@ import {
   Toolbar, 
   Typography, 
   Box,
-  IconButton,
   CssBaseline
 } from '@mui/material';
 
@@ -31,12 +30,9 @@ export const MainLayout: React.FC = () => {
         <Toolbar>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img 
-              src="/images/logoweb.png" 
-              alt="Logo" 
-              style={{ 
-                height: '40px',
-                marginRight: '16px'
-              }} 
+              src="/images/logoweb_sin_fondo.png" 
+              alt="Franastor Logo" 
+              style={{ height: '40px', marginRight: '10px' }}
             />
             <Typography variant="h6" component="div">
               Franastor Docker y K3s

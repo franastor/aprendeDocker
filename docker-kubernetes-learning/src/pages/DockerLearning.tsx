@@ -1445,10 +1445,6 @@ export const DockerLearning: React.FC = () => {
     }
   };
 
-  const isLessonComplete = (lessonId: string) => {
-    return completedLessons.includes(lessonId);
-  };
-
   return (
     <div>
       <Typography variant="h4" gutterBottom>
@@ -1462,16 +1458,9 @@ export const DockerLearning: React.FC = () => {
               {lessons.map((lesson, index) => (
                 <Step 
                   key={lesson.id}
+                  completed={completedLessons.includes(lesson.id)}
                   onClick={() => setActiveLesson(index)}
-                  sx={{ 
-                    cursor: 'pointer',
-                    '& .MuiStepLabel-root': {
-                      cursor: 'pointer',
-                      '&:hover': {
-                        color: 'primary.main'
-                      }
-                    }
-                  }}
+                  sx={{ cursor: 'pointer' }}
                 >
                   <StepLabel>{lesson.title}</StepLabel>
                 </Step>

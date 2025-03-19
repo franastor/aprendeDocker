@@ -806,6 +806,7 @@ export const KubernetesLearning: React.FC = () => {
           {lessons.map((lesson, index) => (
             <Step 
               key={lesson.id}
+              completed={completedLessons.includes(lesson.id)}
               onClick={() => setCurrentLessonIndex(index)}
               sx={{ 
                 cursor: 'pointer',
